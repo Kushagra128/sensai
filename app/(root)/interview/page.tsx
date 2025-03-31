@@ -7,13 +7,13 @@ const Page = async () => {
 	return (
 		<>
 			<h3>Interview generation</h3>
-			<Agent userName="You" userId="user1" tyoe="generate" />
-			{/* <Agent
+			{/* <Agent userName="You" userId="user1" tyoe="generate" /> */}
+			<Agent
         userName={user?.name!}
         userId={user?.id}
-        profileImage={user?.profileURL}
+        // profileImage={user?.profileURL}
         type="generate"
-      /> */}
+      />
 		</>
 	);
 };
