@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
+import { createFeedback } from "@/lib/actions/general.action";
 // import { createFeedback } from "@/lib/actions/general.action";
 
 enum CallStatus {
@@ -87,31 +88,31 @@ const Agent = ({
 			setLastMessage(messages[messages.length - 1].content);
 		}
 
-		// const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-		// 	console.log("handleGenerateFeedback");
+		const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+			console.log("handleGenerateFeedback");
 
-		// 	const { success, feedbackId: id } = await createFeedback({
-		// 		interviewId: interviewId!,
-		// 		userId: userId!,
-		// 		transcript: messages,
-		// 		feedbackId,
-		// 	});
+			const { success, feedbackId: id } = await createFeedback({
+				interviewId: interviewId!,
+				userId: userId!,
+				transcript: messages,
+				feedbackId,
+			});
 
-		// 	if (success && id) {
-		// 		router.push(`/interview/${interviewId}/feedback`);
-		// 	} else {
-		// 		console.log("Error saving feedback");
-		// 		router.push("/");
-		// 	}
-		// };
+			if (success && id) {
+				router.push(`/interview/${interviewId}/feedback`);
+			} else {
+				console.log("Error saving feedback");
+				router.push("/");
+			}
+		};
 
-		// if (callStatus === CallStatus.FINISHED) {
-		// 	if (type === "generate") {
-		// 		router.push("/");
-		// 	} else {
-		// 		handleGenerateFeedback(messages);
-		// 	}
-		// }
+		if (callStatus === CallStatus.FINISHED) {
+			if (type === "generate") {
+				router.push("/");
+			} else {
+				handleGenerateFeedback(messages);
+			}
+		}
 	}, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
 
 	const handleCall = async () => {
@@ -211,7 +212,9 @@ const Agent = ({
 						</span>
 					</button>
 				) : (
-					<button className="btn-disconnect">End</button>
+					<button className="btn-disconnect" onClick={handleDisconnect}>
+						End
+					</button>
 				)}
 			</div>
 		</>
